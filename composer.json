@@ -1,0 +1,14 @@
+{
+    "name": "atakandemirkir/php-thodex-api",
+    "description": "PHP Thodex API is an asynchronous PHP library for the Thodex API designed to be easy to use.",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "php-thodex-api.php"
+        ]
+    }
+}
