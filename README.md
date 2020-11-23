@@ -61,7 +61,7 @@ Code | Message
 406 | Not Acceptable
 500 | Internal Server Error
 
-#####Api Errors
+##### Api Errors
 Code | Message
 --- | ---
 429 | Too many request
