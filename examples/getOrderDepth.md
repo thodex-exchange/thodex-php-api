@@ -1,4 +1,4 @@
-####Parameter
+#### Parameter
     $market: Market keyname
     $limit: limit
     $thodex->getOrderDepth($market, $limit);
@@ -9,7 +9,6 @@ include_once '../php-thodex-api.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
 ```
 
-####
 ```php
 $market = 'BTCTRY';
 $limit = 0;

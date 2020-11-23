@@ -1,4 +1,4 @@
-####Parameter
+#### Parameter
     market: Market keyname            
 ---
 ```php
@@ -7,7 +7,6 @@ include_once '../php-thodex-api.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
 ```
 
-####
 ```php
 $result = $thodex->getMarketSummary();
 ```
