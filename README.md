@@ -50,9 +50,9 @@ $myBalance = $thodex->getBalance();
 }
 ```
 
-####List of Error Messages
+#### List of Error Messages
 
-#####Http Errors:
+##### Http Errors:
 
 Code | Message
 --- | --- 
