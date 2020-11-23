@@ -51,7 +51,9 @@ $myBalance = $thodex->getBalance();
 ```
 
 ####List of Error Messages
+
 #####Http Errors:
+
 Code | Message
 --- | --- 
 401 | Unauthorized
