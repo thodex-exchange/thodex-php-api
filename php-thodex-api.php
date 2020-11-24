@@ -149,7 +149,7 @@ class API
 
     /**
      * @param string $market Key name of market
-     * @param float $amount must be MONEY
+     * @param float $amount must be STOCK
      * @return object
      */
     public function sellMarket(string $market, $amount){
