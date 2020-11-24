@@ -9,32 +9,32 @@ class API
     const REQUEST_TIMEOUT = 30;
     public function __construct()
     {
-        $param = func_get_args();
-        if(!empty($param[1])){
-            $this->api_key = $param[0];
-            $this->api_secret = $param[1];
+        $args = func_get_args();
+        if(!empty($args[1])){
+            $this->api_key = $args[0];
+            $this->api_secret = $args[1];
         }
     }
 
     /**
      * @return object
      */
-    public function getServerTime(){
+    public function serverTime(){
         return $this->execute((object) ['url' => 'v1/public/time']);
     }
 
     /**
      * @return object
      */
-    public function getMarkets(){
+    public function markets(){
         return $this->execute((object) ['url' => 'v1/public/markets']);
     }
 
     /**
-     * @param string $market
+     * @param string $market Key name of market
      * @return object
      */
-    public function getMarketStatus(string $market){
+    public function marketStatus(string $market){
         $request = (object) [
             'url' => 'v1/public/market-status',
             'params' => ['market' => $market]
@@ -42,7 +42,10 @@ class API
         return $this->execute($request);
     }
 
-    public function getMarketSummary(){
+    /**
+     * @return object
+     */
+    public function marketSummary(){
         $request = (object) [
             'url' => 'v1/public/market-summary',
         ];
@@ -50,11 +53,11 @@ class API
     }
 
     /**
-     * @param string $market
-     * @param integer $last_id
-     * @return mixed
+     * @param string $market Key name of market
+     * @param integer $last_id (optional)
+     * @return object
      */
-    public function getMarketHistory(string $market, int $last_id = 0){
+    public function marketHistory(string $market, int $last_id = 0){
         $request = (object) [
             'url' => 'v1/public/market-history',
             'params' => ['market' => $market, 'last_id' => $last_id]
@@ -63,11 +66,11 @@ class API
     }
 
     /**
-     * @param string $market
-     * @param integer $limit
-     * @return mixed
+     * @param string $market Key name of market
+     * @param integer $limit (optional)
+     * @return object
      */
-    public function getOrderDepth(string $market, int $limit = 0){
+    public function orderDepth(string $market, int $limit = 0){
         $request = (object) [
             'url' => 'v1/public/order-depth',
             'params' => ['market' => $market, 'limit' => $limit]
@@ -75,8 +78,105 @@ class API
         return $this->execute($request);
     }
 
+    /**
+     * @param string $market Key name of market
+     * @param integer $offset (optional)
+     * @param integer $limit (optional)
+     * @return object
+     */
+    public function getOpenOrders(string $market, int $offset = 0, int $limit = 0){
+        $request = (object) [
+            'url' => 'v1/market/open-orders',
+            'params' => ['market' => $market, 'offset' => $offset, 'limit' => $limit]
+        ];
+        return $this->execute($request, true);
+    }
 
+    /**
+     * @param string $market Key name of market
+     * @param integer $offset (optional)
+     * @param integer $limit (optional)
+     * @return object
+     */
+    public function getOrderHistory(string $market, int $offset = 0, int $limit = 0){
+        $request = (object) [
+            'url' => 'v1/market/order-history',
+            'params' => ['market' => $market, 'offset' => $offset, 'limit' => $limit]
+        ];
+        return $this->execute($request, true);
+    }
 
+    /**
+     * @param string $market Key name of market
+     * @param float $price
+     * @param float $amount must be STOCK
+     * @return object
+     */
+    public function buyLimit(string $market, $price, $amount){
+        $request = (object) [
+            'url' => 'v1/market/buy-limit',
+            'params' => ['market' => $market, 'price' => $price, 'amount' => $amount]
+        ];
+        return $this->execute($request, true, true);
+    }
+
+    /**
+     * @param string $market Key name of market
+     * @param float $amount must be MONEY
+     * @return object
+     */
+    public function buyMarket(string $market, $amount){
+        $request = (object) [
+            'url' => 'v1/market/buy',
+            'params' => ['market' => $market, 'amount' => $amount]
+        ];
+        return $this->execute($request, true, true);
+    }
+
+    /**
+     * @param string $market Key name of market
+     * @param float $price
+     * @param float $amount must be STOCK
+     * @return object
+     */
+    public function sellLimit(string $market, $price, $amount){
+        $request = (object) [
+            'url' => 'v1/market/sell-limit',
+            'params' => ['market' => $market, 'price' => $price, 'amount' => $amount]
+        ];
+        return $this->execute($request, true, true);
+    }
+
+    /**
+     * @param string $market Key name of market
+     * @param float $amount must be MONEY
+     * @return object
+     */
+    public function sellMarket(string $market, $amount){
+        $request = (object) [
+            'url' => 'v1/market/buy',
+            'params' => ['market' => $market, 'amount' => $amount]
+        ];
+        return $this->execute($request, true, true);
+    }
+
+    /**
+     * @param string $market Key name of market
+     * @param integer $order_id
+     * @return object
+     */
+    public function cancelOrder(string $market, int $order_id){
+        $request = (object) [
+            'url' => 'v1/market/cancel',
+            'params' => ['market' => $market, 'order_id' => $order_id]
+        ];
+        return $this->execute($request, true, true);
+    }
+
+    /**
+     * @param string $assets
+     * @return object
+     */
     public function getBalance($assets = null){
         $request = (object) [
             'url' => 'v1/account/balance',
@@ -85,23 +185,12 @@ class API
         return $this->execute($request, true);
     }
 
-    public function buyMarket(string $market, $amount){
-        $request = (object) [
-            'url' => 'v1/market/buy',
-            'params' => ['market' => $market, 'amount' => $amount]
-        ];
-        return $this->execute($request);
-    }
-
-    public function orderDepth(string $market){
-        $request = (object) [
-            'url' => 'v1/public/order-depth',
-            'params' => ['market' => $market]
-        ];
-        return $this->execute($request);
-    }
-
-
+    /**
+     * @param object $request
+     * @param boolean $auth
+     * @param boolean $post
+     * @return mixed
+     */
     protected function execute(object $request, $auth = false, $post = false) {
         $ch = curl_init();
         $headers = ['cache-control: no-cache'];
@@ -137,6 +226,4 @@ class API
         $params['secret'] = $this->api_secret;
         return hash('sha256', http_build_query($params));
     }
-
-
 }

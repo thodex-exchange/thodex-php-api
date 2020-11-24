@@ -2,13 +2,9 @@
 <?php
 include_once '../php-thodex-api.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
-```
-
-####
-```php
 $result = $thodex->getBalance('BTC');
+print_r($result);
 ```
-
 <details>
  <summary>Show Response</summary>
 
@@ -32,6 +28,7 @@ $result = $thodex->getBalance('BTC');
 
 ```php
 $result = $thodex->getBalance('BTC,TRY');
+print_r($result);
 ```
 
 <details>
@@ -57,6 +54,7 @@ $result = $thodex->getBalance('BTC,TRY');
 
 ```php
 $result = $thodex->getBalance();
+print_r($result);
 ```
 
 <details>

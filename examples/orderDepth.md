@@ -1,18 +1,14 @@
 #### Parameter
-    $market: Market keyname
-    $limit: limit
+    (required)  $market : Market keyname
+    (optional)  $limit  : limit
     $thodex->getOrderDepth($market, $limit);
 ---
 ```php
 <?php
 include_once '../php-thodex-api.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
-```
-
-```php
-$market = 'BTCTRY';
-$limit = 0;
-$result = $thodex->getOrderDepth('BTCTRY', 2);
+$result = $thodex->orderDepth('BTCTRY', 2);
+print_r($result);
 ```
 
 <details>

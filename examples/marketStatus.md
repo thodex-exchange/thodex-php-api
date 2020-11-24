@@ -1,14 +1,13 @@
 #### Parameter
-    market: Market keyname            
+    (required)  market: Market keyname
+    $thodex->marketStatus('BTCTRY');            
 ---
 ```php
 <?php
 include_once '../php-thodex-api.php';
-$thodex = new Thodex\API('api_key', 'api_secret');
-```
-
-```php
-$result = $thodex->getMarketStatus('BTCTRY');
+$thodex = new Thodex\API(); // 'api_key', 'api_secret' not required
+$result = $thodex->marketStatus('BTCTRY');
+print_r($result);
 ```
 
 <details>

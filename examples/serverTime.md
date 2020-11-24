@@ -1,12 +1,9 @@
 ```php
 <?php
 include_once '../php-thodex-api.php';
-$thodex = new Thodex\API('api_key', 'api_secret');
-```
-
-####
-```php
-$result = $thodex->getServerTime();
+$thodex = new Thodex\API(); // 'api_key', 'api_secret' not required
+$result = $thodex->serverTime();
+print_r($result);
 ```
 
 <details>
