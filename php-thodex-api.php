@@ -237,7 +237,7 @@ class API
     /**
      * @param array $markets
      * @param callable $callback
-     * @param mixed $subscribes
+     * @param array $subscribes
      */
     public static function socketReader(array $markets, callable $callback, $subscribes = self::SOCKET_SUBSCRIBE_TYPES){
         $loop = \React\EventLoop\Factory::create();
