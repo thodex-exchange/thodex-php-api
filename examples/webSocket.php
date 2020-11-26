@@ -26,8 +26,8 @@ class anotherClass
                 echo 'Method : ' . $method . PHP_EOL;                   # price
                 echo 'marketName : ' . $marketName . PHP_EOL;           # BTCTRY etc.
                 echo 'price : ' . $params->price  . PHP_EOL . PHP_EOL;  # 139082.44
-                # ... your process
-                    # return true;
+                    # ... your process
+                        # return true;
                 break;
             case 'deals':
                 echo 'Method : ' . $method . PHP_EOL;                   # deals
@@ -37,8 +37,8 @@ class anotherClass
                 echo 'time : ' . $params->time  . PHP_EOL;              # deal time     => 1606392244.4197
                 echo 'amount : ' . $params->amount  . PHP_EOL;          # deal amount   => 1606392244.4197
                 echo 'type : ' . $params->type  . PHP_EOL . PHP_EOL;    # type          => 1606392244.4197
-                # ... your process
-                # return true;
+                    # ... your process
+                        # return true;
                 break;
             case 'state':
                 echo 'Method : ' . $method . PHP_EOL;               # state
@@ -51,8 +51,8 @@ class anotherClass
                 echo 'close : ' . $params->close . PHP_EOL;         # daily close value ( probably equal last value for this usage )
                 echo 'high : ' . $params->high . PHP_EOL;           # daily high value
                 echo 'low : ' . $params->low .  PHP_EOL . PHP_EOL;  # daily low value
-                # ... your process
-                # return true;
+                    # ... your process
+                        # return true;
                 break;
         }
     }
