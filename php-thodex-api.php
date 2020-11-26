@@ -260,15 +260,15 @@ class API
                     if(!empty($response->params[1]) && !empty($response->method))
                         if((is_array($response->params[1]) && count($response->params[1]) == 1) || !is_array($response->params[1])){
                             $method = explode('.', $response->method)[0];
-                            $marketKeyname = $response->params[0];
+                            $marketKeyName = $response->params[0];
                             if(is_object($response->params[1])){
-                                $params = (object) get_object_vars($response->params[1]);
+                                $params = $response->params[1];
                             }else if(is_array($response->params[1])){
                                 $params = (object) $response->params[1][0];
                             }else {
                                 $params = (object) ['price' => $response->params[1]];
                             }
-                            $stopSocketConnection = call_user_func($callback, $method, $marketKeyname, $params) ?? 0;
+                            $stopSocketConnection = call_user_func($callback, $method, $marketKeyName, $params) ?? 0;
                             if ($stopSocketConnection)
                                 $loop->stop();
                         }
