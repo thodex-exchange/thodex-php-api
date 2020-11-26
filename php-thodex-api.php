@@ -235,11 +235,11 @@ class API
     }
 
     /**
-     * @param mixed $markets
+     * @param array $markets
      * @param callable $callback
      * @param mixed $subscribes
      */
-    public static function socketReader($markets, callable $callback, $subscribes = self::SOCKET_SUBSCRIBE_TYPES){
+    public static function socketReader(array $markets, callable $callback, $subscribes = self::SOCKET_SUBSCRIBE_TYPES){
         $loop = \React\EventLoop\Factory::create();
         $reactConnector = new \React\Socket\Connector($loop);
         $connector = new \Ratchet\Client\Connector($loop, $reactConnector);
