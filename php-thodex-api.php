@@ -3,9 +3,12 @@ namespace Thodex;
 
 class API
 {
-    protected $base = 'https://api.thodex.com/';
     protected $api_key = '';
     protected $api_secret = '';
+    const API_SERVER = 'https://api.thodex.com/';
+    const SOCKET_SERVER = 'wss://wspub.thodex.com:443';
+    const SOCKET_SUBSCRIBE_TYPES = ['deals', 'price', 'state'];
+
     const REQUEST_TIMEOUT = 30;
     public function __construct()
     {
@@ -112,7 +115,7 @@ class API
      * @param float $amount must be STOCK
      * @return object
      */
-    public function buyLimit(string $market, $price, $amount){
+    public function buyLimit(string $market, float $price, float $amount){
         $request = (object) [
             'url' => 'v1/market/buy-limit',
             'params' => ['market' => $market, 'price' => $price, 'amount' => $amount]
@@ -125,7 +128,7 @@ class API
      * @param float $amount must be MONEY
      * @return object
      */
-    public function buyMarket(string $market, $amount){
+    public function buyMarket(string $market, float $amount){
         $request = (object) [
             'url' => 'v1/market/buy',
             'params' => ['market' => $market, 'amount' => $amount]
@@ -139,7 +142,7 @@ class API
      * @param float $amount must be STOCK
      * @return object
      */
-    public function sellLimit(string $market, $price, $amount){
+    public function sellLimit(string $market, float $price, float $amount){
         $request = (object) [
             'url' => 'v1/market/sell-limit',
             'params' => ['market' => $market, 'price' => $price, 'amount' => $amount]
@@ -152,7 +155,7 @@ class API
      * @param float $amount must be STOCK
      * @return object
      */
-    public function sellMarket(string $market, $amount){
+    public function sellMarket(string $market, float $amount){
         $request = (object) [
             'url' => 'v1/market/buy',
             'params' => ['market' => $market, 'amount' => $amount]
@@ -203,7 +206,7 @@ class API
         }
 
         $curlparams= [
-            CURLOPT_URL => $this->base . $request->url . (!empty($request->params) ? '?' . http_build_query($request->params) : ''),
+            CURLOPT_URL => self::API_SERVER . $request->url . (!empty($request->params) ? '?' . http_build_query($request->params) : ''),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => self::REQUEST_TIMEOUT,
@@ -221,9 +224,62 @@ class API
         return json_decode($resultRaw);
     }
 
+    /**
+     * @param array $params
+     * @return string
+     */
     private function _encode($params) {
         ksort($params);
         $params['secret'] = $this->api_secret;
         return hash('sha256', http_build_query($params));
+    }
+
+    /**
+     * @param mixed $markets
+     * @param callable $callback
+     * @param mixed $subscribes
+     */
+    public static function socketReader($markets, callable $callback, $subscribes = self::SOCKET_SUBSCRIBE_TYPES){
+        $loop = \React\EventLoop\Factory::create();
+        $reactConnector = new \React\Socket\Connector($loop);
+        $connector = new \Ratchet\Client\Connector($loop, $reactConnector);
+        $connector(self::SOCKET_SERVER)
+            ->then(function(\Ratchet\Client\WebSocket $conn) use ($loop, $subscribes, $markets, $callback)  {
+                $conn->send(json_encode(['method' => 'state.unsubscribe', 'params' => [], 'id' => 0]));
+                foreach ($subscribes as $subscribe){
+                    if(in_array($subscribe, self::SOCKET_SUBSCRIBE_TYPES)){
+                        $conn->send(json_encode([
+                            'method' => $subscribe .'.subscribe',
+                            'params' => $markets,
+                            'id' => 1
+                        ]));
+                    }
+                }
+                $conn->on('message', function(\Ratchet\RFC6455\Messaging\MessageInterface $msg) use ($loop, $callback) {
+                    $response = json_decode($msg);
+                    if(!empty($response->params[1]) && !empty($response->method))
+                        if((is_array($response->params[1]) && count($response->params[1]) == 1) || !is_array($response->params[1])){
+                            $method = explode('.', $response->method)[0];
+                            $marketKeyname = $response->params[0];
+                            if(is_object($response->params[1])){
+                                $params = (object) get_object_vars($response->params[1]);
+                            }else if(is_array($response->params[1])){
+                                $params = (object) $response->params[1][0];
+                            }else {
+                                $params = (object) ['price' => $response->params[1]];
+                            }
+                            $stopSocketConnection = call_user_func($callback, $method, $marketKeyname, $params) ?? 0;
+                            if ($stopSocketConnection)
+                                $loop->stop();
+                        }
+                });
+                $conn->on('close', function($code = null, $reason = null) use ($loop){
+                    $loop->stop();
+                });
+            }, function(\Exception $e) use ($loop) {
+                echo "Could not connect: {$e->getMessage()}\n";
+                $loop->stop();
+            });
+        $loop->run();
     }
 }
