@@ -35,8 +35,8 @@ class anotherClass
                 echo 'price : ' . $params->price  . PHP_EOL;            # price         => 139082.44
                 echo 'id : ' . $params->id  . PHP_EOL;                  # deal id       => 7296837
                 echo 'time : ' . $params->time  . PHP_EOL;              # deal time     => 1606392244.4197
-                echo 'amount : ' . $params->amount  . PHP_EOL;          # deal amount   => 1606392244.4197
-                echo 'type : ' . $params->type  . PHP_EOL . PHP_EOL;    # type          => 1606392244.4197
+                echo 'amount : ' . $params->amount  . PHP_EOL;          # deal amount   => 0.3
+                echo 'type : ' . $params->type  . PHP_EOL . PHP_EOL;    # type          => buy | sell
                     # ... your process
                         # return true;
                 break;
