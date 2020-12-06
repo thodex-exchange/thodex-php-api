@@ -1,10 +1,10 @@
-[![GitHub last commit](https://img.shields.io/github/last-commit/atakandemirkir/php-thodex-api.svg?style=flat-square)](#) 
+[![GitHub last commit](https://img.shields.io/github/last-commit/thodex-exchange/thodex-php-api.svg?style=flat-square)](#) 
 
 # php-thodex-api
 PHP library for the Thodex API designed to be easy to use.
 
 ## Getting Started
-    composer require thodex-exchange/php-thodex-api
+    composer require thodex-exchange/thodex-php-api
 ```php
 require 'vendor/autoload.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
