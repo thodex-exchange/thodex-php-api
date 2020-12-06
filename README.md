@@ -4,7 +4,7 @@
 PHP library for the Thodex API designed to be easy to use.
 
 ## Getting Started
-    composer require atakandemirkir/php-thodex-api
+    composer require thodex-exchange/php-thodex-api
 ```php
 require 'vendor/autoload.php';
 $thodex = new Thodex\API('api_key', 'api_secret');
