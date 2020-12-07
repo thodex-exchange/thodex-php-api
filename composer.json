@@ -1,5 +1,5 @@
 {
-    "name": "thodex-exchange/php-thodex-api",
+    "name": "thodex-exchange/thodex-php-api",
     "description": "PHP Thodex API is an asynchronous PHP library for the Thodex API designed to be easy to use.",
     "license": "MIT",
     "require": {
