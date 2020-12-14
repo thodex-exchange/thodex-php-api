@@ -157,7 +157,7 @@ class API
      */
     public function sellMarket(string $market, float $amount){
         $request = (object) [
-            'url' => 'v1/market/buy',
+            'url' => 'v1/market/sell',
             'params' => ['market' => $market, 'amount' => $amount]
         ];
         return $this->execute($request, true, true);
