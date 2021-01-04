@@ -96,6 +96,18 @@ class API
     }
 
     /**
+     * @param string $order_id Order Id
+     * @return object
+     */
+    public function getFinishedOrder(int $order_id){
+        $request = (object) [
+            'url' => 'v1/market/order-finished-info',
+            'params' => ['order_id' => $order_id]
+        ];
+        return $this->execute($request, true);
+    }
+
+    /**
      * @param string $market Key name of market
      * @param integer $offset (optional)
      * @param integer $limit (optional)
